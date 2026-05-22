@@ -1,0 +1,23 @@
+import type { MetadataRoute } from "next";
+import { siteConfig } from "@/data/site";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const routes = [
+    "",
+    "/about",
+    "/physical-therapy",
+    "/occupational-therapy",
+    "/geriatric-therapy",
+    "/in-home-therapy",
+    "/private-pay-therapy",
+    "/service-areas",
+    "/contact"
+  ];
+
+  return routes.map((route) => ({
+    url: `${siteConfig.url}${route}`,
+    lastModified: new Date(),
+    changeFrequency: route === "" ? "weekly" : "monthly",
+    priority: route === "" ? 1 : 0.8
+  }));
+}
