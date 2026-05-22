@@ -55,16 +55,10 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a
-              href={siteConfig.phoneHref}
-              className="hidden rounded-full border border-teal/20 bg-white px-4 py-2 text-sm font-semibold text-teal hover:border-teal lg:inline-flex"
-            >
+            <a href={siteConfig.phoneHref} className="btn-outline hidden px-4 py-2 text-sm lg:inline-flex">
               {siteConfig.phoneDisplay}
             </a>
-            <Link
-              href="/contact"
-              className="hidden rounded-full bg-teal px-5 py-3 text-sm font-semibold text-white hover:bg-teal/90 lg:inline-flex"
-            >
+            <Link href="/contact" className="btn-primary hidden px-5 py-3 text-sm lg:inline-flex">
               {siteConfig.ctas.primary}
             </Link>
             <button
@@ -73,7 +67,7 @@ export function SiteHeader() {
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
               onClick={() => setMenuOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-teal/20 bg-white text-teal lg:hidden"
+              className="btn-icon h-11 w-11 lg:hidden"
             >
               <span className="relative h-4 w-5">
                 <span
@@ -107,8 +101,8 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium ${
-                    active ? "bg-teal text-white" : "text-charcoal/72 hover:bg-white hover:text-teal"
+                  className={`btn-pill shrink-0 px-4 py-2 text-sm font-medium ${
+                    active ? "bg-teal text-white" : "text-charcoal/72"
                   }`}
                 >
                   {item.label}
@@ -129,8 +123,8 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-2xl px-4 py-3 text-base font-semibold ${
-                    active ? "bg-teal text-white" : "bg-white text-charcoal/80"
+                  className={`rounded-2xl px-4 py-3 text-base font-semibold transition duration-200 ease-out ${
+                    active ? "bg-teal text-white" : "bg-white text-charcoal/80 hover:bg-gold hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -139,13 +133,10 @@ export function SiteHeader() {
             })}
           </nav>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <a
-              href={siteConfig.phoneHref}
-              className="rounded-full border border-teal/20 bg-white px-5 py-3 text-center font-semibold text-teal"
-            >
+            <a href={siteConfig.phoneHref} className="btn-outline px-5 py-3 text-center">
               {siteConfig.phoneDisplay}
             </a>
-            <Link href="/contact" className="rounded-full bg-teal px-5 py-3 text-center font-semibold text-white">
+            <Link href="/contact" className="btn-primary px-5 py-3 text-center">
               {siteConfig.ctas.primary}
             </Link>
           </div>

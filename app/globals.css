@@ -89,7 +89,7 @@ textarea {
 }
 
 .eyebrow {
-  @apply text-sm font-semibold uppercase tracking-[0.24em] text-teal;
+  @apply text-sm font-semibold uppercase tracking-[0.24em] text-gold;
 }
 
 .glass-panel {
@@ -105,6 +105,38 @@ textarea {
 
 .section-kicker {
   @apply inline-flex rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-charcoal;
+}
+
+.btn-primary {
+  @apply rounded-full bg-teal font-semibold text-white transition duration-200 ease-out hover:bg-gold hover:text-white;
+}
+
+.btn-secondary {
+  @apply rounded-full border border-gold/50 bg-white font-semibold text-charcoal transition duration-200 ease-out hover:border-gold hover:bg-gold hover:text-white;
+}
+
+.btn-outline {
+  @apply rounded-full border border-teal/20 bg-white font-semibold text-teal transition duration-200 ease-out hover:border-gold hover:bg-gold hover:text-white;
+}
+
+.btn-on-dark {
+  @apply rounded-full bg-white font-semibold text-teal transition duration-200 ease-out hover:bg-gold hover:text-white;
+}
+
+.btn-ghost-on-dark {
+  @apply rounded-full border border-white/35 bg-white/10 font-semibold text-white backdrop-blur transition duration-200 ease-out hover:border-gold hover:bg-gold hover:text-white;
+}
+
+.btn-outline-on-dark {
+  @apply rounded-full border border-white/35 font-semibold text-white transition duration-200 ease-out hover:border-gold hover:bg-gold hover:text-white;
+}
+
+.btn-pill {
+  @apply rounded-full transition duration-200 ease-out hover:bg-gold hover:text-white;
+}
+
+.btn-icon {
+  @apply inline-flex items-center justify-center rounded-full border border-teal/20 bg-white text-teal transition duration-200 ease-out hover:border-gold hover:bg-gold hover:text-white;
 }
 
 .theme-dark .bg-warm,
@@ -193,6 +225,11 @@ textarea {
   color: rgba(248, 247, 243, 0.9);
 }
 
+.theme-dark .eyebrow,
+.theme-dark .text-gold {
+  color: #c8a44d;
+}
+
 .theme-dark .theme-toggle {
   border-color: rgba(127, 175, 142, 0.24);
   background-color: rgba(248, 247, 243, 0.08);
@@ -239,6 +276,19 @@ textarea {
 
 .theme-dark .site-header-light .bg-teal {
   background-color: #0f7c7a;
+}
+
+.theme-dark .site-header-light .btn-primary:hover,
+.theme-dark .site-header-light .btn-outline:hover,
+.theme-dark .site-header-light .btn-icon:hover,
+.theme-dark .btn-primary:hover,
+.theme-dark .btn-outline:hover,
+.theme-dark .btn-on-dark:hover,
+.theme-dark .btn-ghost-on-dark:hover,
+.theme-dark .btn-outline-on-dark:hover {
+  background-color: #c8a44d;
+  border-color: #c8a44d;
+  color: #ffffff;
 }
 
 .theme-dark .site-header-light .text-white {

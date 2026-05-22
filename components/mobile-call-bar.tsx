@@ -7,13 +7,13 @@ export function MobileCallBar() {
       <div className="mx-auto flex max-w-md gap-3">
         <a
           href={siteConfig.phoneHref}
-          className="flex-1 rounded-full bg-teal px-4 py-3 text-center font-semibold text-white"
+          className="btn-primary flex-1 px-4 py-3 text-center"
         >
           {siteConfig.ctas.secondary}
         </a>
         <Link
           href="/contact"
-          className="flex-1 rounded-full border border-gold/40 bg-gold/10 px-4 py-3 text-center font-semibold text-charcoal"
+          className="btn-secondary flex-1 border-gold/40 bg-gold/10 px-4 py-3 text-center"
         >
           {siteConfig.ctas.primary}
         </Link>

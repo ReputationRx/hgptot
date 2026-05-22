@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { buildBreadcrumbSchema } from "@/lib/seo";
 import { siteConfig, stockImages } from "@/data/site";
+import { ContactForm } from "@/components/contact-form";
 import { PageHero } from "@/components/page-hero";
 import { PhotoPanel } from "@/components/photo-panel";
 import { SectionHeading } from "@/components/section-heading";
@@ -69,7 +70,7 @@ export function ContentPage({
       <PageHero eyebrow={eyebrow} title={title} description={description} />
 
       <section className="section-space">
-        <div className="container-shell grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="container-shell grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-8">
             <SectionHeading
               eyebrow="How We Help"
@@ -81,15 +82,6 @@ export function ContentPage({
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-          </div>
-
-          <div className="space-y-6">
-            <PhotoPanel
-              image={pageImage}
-              label={pageImage.label}
-              heightClassName="min-h-[420px]"
-              imageClassName={pageImage.imageClassName}
-            />
 
             <div className="card-surface bg-gradient-to-b from-white to-warm p-8">
               <span className="section-kicker">Care goals</span>
@@ -101,18 +93,40 @@ export function ContentPage({
                   </div>
                 ))}
               </div>
-              <div className="mt-8 rounded-[1.75rem] bg-teal p-6 text-white">
+              <div className="mt-8 rounded-[1.75rem] bg-teal p-6 text-white lg:hidden">
                 <p className="text-sm uppercase tracking-[0.2em] text-white/70">Next step</p>
                 <p className="mt-3 text-lg leading-8 text-white/88">
-                  Call to discuss the patient’s goals, location, and whether in-home Physical Therapy or Occupational Therapy is the best fit.
+                  Call to discuss the patient’s goals, location, and whether in-home Physical Therapy or Occupational
+                  Therapy is the best fit.
                 </p>
                 <a
                   href={siteConfig.phoneHref}
-                  className="mt-6 inline-flex rounded-full bg-white px-5 py-3 font-semibold text-teal"
+                  className="btn-on-dark mt-6 inline-flex px-5 py-3"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
               </div>
+            </div>
+          </div>
+
+          <div className="space-y-6 lg:sticky lg:top-28 lg:self-start">
+            <PhotoPanel
+              image={pageImage}
+              label={pageImage.label}
+              heightClassName="min-h-[280px] lg:min-h-[320px]"
+              imageClassName={pageImage.imageClassName}
+            />
+
+            <ContactForm defaultService={eyebrow} showIntro />
+
+            <div className="hidden rounded-[1.75rem] bg-teal p-6 text-white lg:block">
+              <p className="text-sm uppercase tracking-[0.2em] text-white/70">Prefer to call?</p>
+              <p className="mt-3 text-lg leading-8 text-white/88">
+                Speak with our team about goals, location, and whether in-home care is the right fit.
+              </p>
+              <a href={siteConfig.phoneHref} className="btn-on-dark mt-6 inline-flex px-5 py-3">
+                {siteConfig.phoneDisplay}
+              </a>
             </div>
           </div>
         </div>

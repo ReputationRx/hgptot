@@ -72,16 +72,10 @@ export default function HomePage() {
               personal, and clinically grounded.
             </p>
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link
-                href="/contact"
-                className="rounded-full bg-teal px-7 py-4 text-center text-base font-semibold text-white hover:bg-teal/90"
-              >
+              <Link href="/contact" className="btn-primary px-7 py-4 text-center text-base">
                 Book Evaluation
               </Link>
-              <a
-                href={siteConfig.phoneHref}
-                className="rounded-full border border-white/35 bg-white/10 px-7 py-4 text-center text-base font-semibold text-white backdrop-blur hover:bg-white/18"
-              >
+              <a href={siteConfig.phoneHref} className="btn-ghost-on-dark px-7 py-4 text-center text-base">
                 Call {siteConfig.phoneDisplay}
               </a>
             </div>
@@ -185,7 +179,7 @@ export default function HomePage() {
               dignity, home safety, mobility, and family trust.
             </p>
             <div className="mt-8">
-              <Link href="/conditions-treated" className="rounded-full bg-teal px-7 py-4 font-semibold text-white">
+              <Link href="/conditions-treated" className="btn-primary px-7 py-4">
                 Explore Conditions Treated
               </Link>
             </div>
@@ -195,7 +189,7 @@ export default function HomePage() {
             {testimonials.map((item) => (
               <figure key={`${item.name}-${item.context}`} className="rounded-lg border border-teal/10 bg-white p-6 shadow-soft">
                 <blockquote className="text-lg leading-8 text-charcoal/78">&ldquo;{item.quote}&rdquo;</blockquote>
-                <figcaption className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-teal">
+                <figcaption className="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-gold">
                   {item.name} | {item.context}
                 </figcaption>
               </figure>
@@ -213,13 +207,10 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row lg:justify-end">
-            <Link href="/contact" className="rounded-full bg-white px-7 py-4 text-center font-semibold text-teal">
+            <Link href="/contact" className="btn-on-dark px-7 py-4 text-center">
               Book Evaluation
             </Link>
-            <a
-              href={siteConfig.phoneHref}
-              className="rounded-full border border-white/35 px-7 py-4 text-center font-semibold text-white"
-            >
+            <a href={siteConfig.phoneHref} className="btn-outline-on-dark px-7 py-4 text-center">
               Call Now
             </a>
           </div>

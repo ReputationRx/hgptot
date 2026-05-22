@@ -2,7 +2,12 @@
 
 import { FormEvent, useState } from "react";
 
-export function ContactForm() {
+type ContactFormProps = {
+  defaultService?: string;
+  showIntro?: boolean;
+};
+
+export function ContactForm({ defaultService, showIntro = false }: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -12,6 +17,16 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="card-surface space-y-5 p-6 sm:p-8">
+      {showIntro ? (
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gold">Get started</p>
+          <h2 className="mt-3 font-serif text-2xl text-charcoal">Request a consultation</h2>
+          <p className="mt-3 text-charcoal/70">
+            Share a few details and we will follow up about availability, location, and private pay options.
+          </p>
+        </div>
+      ) : null}
+
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="space-y-2">
           <span className="text-sm font-semibold text-charcoal">Name</span>
@@ -31,7 +46,11 @@ export function ContactForm() {
         </label>
         <label className="space-y-2">
           <span className="text-sm font-semibold text-charcoal">Service Needed</span>
-          <select className="w-full rounded-2xl border border-teal/15 px-4 py-3 outline-none focus:border-teal" name="serviceNeeded" defaultValue="">
+          <select
+            className="w-full rounded-2xl border border-teal/15 px-4 py-3 outline-none focus:border-teal"
+            name="serviceNeeded"
+            defaultValue={defaultService ?? ""}
+          >
             <option value="" disabled>
               Select a service
             </option>
@@ -75,10 +94,7 @@ export function ContactForm() {
         />
       </label>
 
-      <button
-        type="submit"
-        className="rounded-full bg-teal px-6 py-3 font-semibold text-white hover:bg-teal/90"
-      >
+      <button type="submit" className="btn-primary px-6 py-3">
         Request a Consultation
       </button>
 

@@ -21,15 +21,12 @@ export function PageHero({ eyebrow, title, description, align = "left" }: PageHe
           <p className={`mt-8 lede ${centered ? "mx-auto max-w-3xl" : "max-w-3xl"}`}>{description}</p>
         </div>
         <div className={`mt-10 flex flex-col gap-4 sm:flex-row ${centered ? "justify-center" : ""}`}>
-          <Link
-            href="/contact"
-            className="rounded-full bg-teal px-6 py-4 text-center font-semibold text-white hover:bg-teal/90"
-          >
+          <Link href="/contact" className="btn-primary px-6 py-4 text-center">
             {siteConfig.ctas.primary}
           </Link>
           <a
             href={siteConfig.phoneHref}
-            className="rounded-full border border-gold/50 bg-white px-6 py-4 text-center font-semibold text-charcoal hover:border-gold"
+            className="btn-secondary px-6 py-4 text-center"
           >
             {siteConfig.ctas.secondary}
           </a>

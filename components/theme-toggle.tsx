@@ -42,8 +42,8 @@ export function ThemeToggle() {
             type="button"
             aria-pressed={active}
             onClick={() => chooseTheme(option)}
-            className={`rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] ${
-              active ? "bg-teal text-white" : "text-charcoal/70 hover:text-teal"
+            className={`rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition duration-200 ease-out ${
+              active ? "bg-teal text-white" : "text-charcoal/70 hover:bg-gold hover:text-white"
             }`}
           >
             {option}
