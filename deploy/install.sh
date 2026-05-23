@@ -25,6 +25,9 @@ echo "==> Copying standalone assets"
 cp -r public .next/standalone/public
 cp -r .next/static .next/standalone/.next/static
 
+echo "==> Patching nginx to serve /_next/static from disk"
+bash deploy/fix-static-400.sh 2>/dev/null || true
+
 echo "==> Starting with PM2"
 pm2 delete hgptot 2>/dev/null || true
 pm2 start ecosystem.config.cjs
