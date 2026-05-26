@@ -21,13 +21,14 @@ cd "$APP_DIR"
 cp -r public .next/standalone/public 2>/dev/null || true
 cp -r .next/static .next/standalone/.next/static
 
-echo "==> Patch nginx if static location missing"
-if ! grep -q "alias /www/wwwroot/hgptot.com/.next/static/" "$NGINX_CONF"; then
-  # Insert before "location / {" proxy block
-  python3 <<'PY'
+echo "==> Patch nginx: serve /_next/static/ from disk (replace proxy if present)"
+python3 <<'PY'
+import re
 from pathlib import Path
+
 path = Path("/www/server/panel/vhost/nginx/node_hgptot.conf")
 text = path.read_text()
+
 block = """    # Next.js static assets (serve from disk, bypass Node proxy)
     location /_next/static/ {
         alias /www/wwwroot/hgptot.com/.next/static/;
@@ -37,17 +38,54 @@ block = """    # Next.js static assets (serve from disk, bypass Node proxy)
     }
 
 """
-needle = "    location / {"
-if needle not in text:
-    raise SystemExit("Could not find location / block in nginx config")
+
+def strip_next_static_locations(s: str) -> str:
+    """Remove any location /_next/static ... { ... } blocks (proxy or alias)."""
+    out = []
+    i = 0
+    while i < len(s):
+        m = re.search(r"^\s*location\s+/_next/static", s[i:], re.MULTILINE)
+        if not m:
+            out.append(s[i:])
+            break
+        start = i + m.start()
+        out.append(s[i:start])
+        brace = s.find("{", start)
+        if brace == -1:
+            out.append(s[start:])
+            break
+        depth = 0
+        j = brace
+        while j < len(s):
+            if s[j] == "{":
+                depth += 1
+            elif s[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    j += 1
+                    while j < len(s) and s[j] in " \t\r\n":
+                        j += 1
+                    i = j
+                    break
+            j += 1
+        else:
+            out.append(s[start:])
+            break
+    return "".join(out)
+
+text = strip_next_static_locations(text)
+
 if "alias /www/wwwroot/hgptot.com/.next/static/" not in text:
+    needle = "    location / {"
+    if needle not in text:
+        raise SystemExit("Could not find location / block in nginx config")
     text = text.replace(needle, block + needle, 1)
-    path.write_text(text)
-    print("nginx config patched")
+    print("nginx: inserted static alias block")
 else:
-    print("nginx static block already present")
+    print("nginx: static alias already present after cleanup")
+
+path.write_text(text)
 PY
-fi
 
 echo "==> Reload nginx"
 /www/server/nginx/sbin/nginx -t
