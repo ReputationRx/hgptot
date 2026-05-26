@@ -1,25 +1,32 @@
 #!/usr/bin/env bash
-# Fix Next.js ChunkLoadError / 400 on hgptot.com
-# Root cause: WAF or nginx blocks /_next/static/chunks/app/ and /_next/static/css/
+# Fix Next.js ChunkLoadError / 400 on hgptot.com (CSS/JS not loading)
+# Serves /_next/static/ from disk in every vhost that proxies to this app (port 3004).
 # Run on server as root: bash /www/wwwroot/hgptot.com/deploy/fix-static-400.sh
 
 set -euo pipefail
 
 APP_DIR="/www/wwwroot/hgptot.com"
-NGINX_CONF="/www/server/panel/vhost/nginx/node_hgptot.conf"
+VHOST_DIR="/www/server/panel/vhost/nginx"
 
 echo "==> Ensure static files exist"
 cd "$APP_DIR"
 cp -r public .next/standalone/public 2>/dev/null || true
 cp -r .next/static .next/standalone/.next/static
 
-echo "==> Patch nginx: serve /_next/static/ from disk (replace proxy if present)"
+CSS_FILES=$(find .next/static/css -name "*.css" 2>/dev/null | wc -l | tr -d " ")
+if [ "${CSS_FILES:-0}" -lt 1 ]; then
+  echo "ERROR: no CSS under .next/static/css after build — build may have failed"
+  exit 1
+fi
+echo "==> Found $CSS_FILES CSS file(s) in .next/static/css"
+
+echo "==> Patch nginx vhosts (serve /_next/static/ from disk; remove duplicate proxy blocks)"
 python3 <<'PY'
 import re
 from pathlib import Path
 
-path = Path("/www/server/panel/vhost/nginx/node_hgptot.conf")
-text = path.read_text()
+app_dir = Path("/www/wwwroot/hgptot.com")
+vhost_dir = Path("/www/server/panel/vhost/nginx")
 
 block = """    # Next.js static assets (serve from disk, bypass Node proxy)
     location /_next/static/ {
@@ -31,8 +38,8 @@ block = """    # Next.js static assets (serve from disk, bypass Node proxy)
 
 """
 
+
 def strip_next_static_locations(s: str) -> str:
-    """Remove any location /_next/static ... { ... } blocks (proxy or alias)."""
     out = []
     i = 0
     while i < len(s):
@@ -65,22 +72,47 @@ def strip_next_static_locations(s: str) -> str:
             break
     return "".join(out)
 
-text = strip_next_static_locations(text)
 
-if "alias /www/wwwroot/hgptot.com/.next/static/" not in text:
-    m = re.search(r"^(\s*)location\s+/\s*\{", text, re.MULTILINE)
-    if m:
-        insert_at = m.start()
-        text = text[:insert_at] + block + text[insert_at:]
-        print("nginx: inserted static alias block before location /")
+def patch_one(text):
+    text = strip_next_static_locations(text)
+    if "alias /www/wwwroot/hgptot.com/.next/static/" in text:
+        return text, "unchanged"
+    m = re.search(r"^\s*location\s+/\s*\{", text, re.MULTILINE)
+    if not m:
+        return text, "skip_no_location_slash"
+    insert_at = m.start()
+    return text[:insert_at] + block + text[insert_at:], "inserted"
+
+
+def should_patch_file(path: Path) -> bool:
+    try:
+        text = path.read_text()
+    except OSError:
+        return False
+    if "3004" not in text:
+        return False
+    if "hgptot" not in text.lower():
+        return False
+    return True
+
+
+patched = 0
+considered = 0
+for path in sorted(vhost_dir.glob("*.conf")):
+    if not should_patch_file(path):
+        continue
+    considered += 1
+    text = path.read_text()
+    new_text, status = patch_one(text)
+    if new_text != text:
+        path.write_text(new_text)
+        patched += 1
+        print(f"nginx: updated {path.name} ({status})")
     else:
-        raise SystemExit(
-            "Could not find 'location / {' in nginx config — add the /_next/static/ alias block manually in aaPanel"
-        )
-else:
-    print("nginx: static alias already present after cleanup")
+        print(f"nginx: {path.name} ({status})")
 
-path.write_text(text)
+if considered == 0:
+    print("nginx: WARNING — no vhost .conf matched (3004 + hgptot). Check aaPanel node proxy file names.")
 PY
 
 echo "==> Reload nginx"
@@ -92,14 +124,12 @@ if [ -f /www/server/nodejs/vhost/scripts/hgptot.sh ]; then
   bash /www/server/nodejs/vhost/scripts/hgptot.sh restart 2>/dev/null || bash /www/server/nodejs/vhost/scripts/hgptot.sh
 fi
 
-echo "==> Test URLs (expect HTTP/1.1 200 for all)"
-curl -sI -H "Host: hgptot.com" "http://127.0.0.1/_next/static/chunks/app/layout-4e24f1384f2152c7.js" | head -1 || true
-curl -sI -H "Host: hgptot.com" "http://127.0.0.1/_next/static/css/" 2>/dev/null | head -1 || true
-LAYOUT=$(ls "$APP_DIR/.next/static/chunks/app/"layout-*.js 2>/dev/null | head -1)
-if [ -n "$LAYOUT" ]; then
-  HASH=$(basename "$LAYOUT")
-  curl -sI -H "Host: hgptot.com" "http://127.0.0.1/_next/static/chunks/app/$HASH" | head -1
+echo "==> Smoke test (first layout CSS on disk)"
+FIRST_CSS=$(ls "$APP_DIR/.next/static/css/"*.css 2>/dev/null | head -1)
+if [ -n "$FIRST_CSS" ]; then
+  REL="_next/static/css/$(basename "$FIRST_CSS")"
+  echo "Testing https://hgptot.com/$REL"
+  curl -sI "https://hgptot.com/$REL" | head -3 || true
 fi
 
-echo "==> If still 400: aaPanel WAF is blocking /app/ in URLs."
-echo "    Whitelist: /_next/static/* for hgptot.com in Security -> WAF -> Site rules"
+echo "==> If still 404: purge CDN cache, or whitelist /_next/static/* in aaPanel WAF"
