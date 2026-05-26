@@ -4,6 +4,8 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MobileCallBar } from "@/components/mobile-call-bar";
+import { CookieConsentBanner, CookiePreferencesButton } from "@/components/cookie-consent-banner";
+import { ConsentScripts } from "@/components/consent-scripts";
 import { buildMedicalBusinessSchema } from "@/lib/seo";
 import { siteConfig } from "@/data/site";
 
@@ -24,7 +26,10 @@ export const metadata: Metadata = {
     "Long Island rehabilitation",
     "Mobile occupational therapy",
     "Seniors rehabilitation Queens",
-    "Fall prevention Nassau County"
+    "Fall prevention Nassau County",
+    "in-home therapy blog",
+    "geriatric physical therapy Queens",
+    "occupational therapy Nassau County guides"
   ],
   category: "healthcare",
   icons: {
@@ -49,6 +54,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <main>{children}</main>
         <SiteFooter />
         <MobileCallBar />
+        <CookieConsentBanner />
+        <CookiePreferencesButton />
+        <ConsentScripts />
       </body>
     </html>
   );

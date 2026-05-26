@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { insuranceCarrierNames } from "@/data/insurance";
 
 type ContactFormProps = {
   defaultService?: string;
@@ -72,15 +73,25 @@ export function ContactForm({ defaultService, showIntro = false }: ContactFormPr
             <option>Need help understanding options</option>
           </select>
         </label>
-        <label className="space-y-2">
-          <span className="text-sm font-semibold text-charcoal">Private Pay / Out-of-Pocket Interest</span>
-          <select className="w-full rounded-2xl border border-teal/15 px-4 py-3 outline-none focus:border-teal" name="privatePay" defaultValue="">
+        <label className="space-y-2 sm:col-span-2">
+          <span className="text-sm font-semibold text-charcoal">Insurance / Private Pay</span>
+          <select className="w-full rounded-2xl border border-teal/15 px-4 py-3 outline-none focus:border-teal" name="insuranceOrPayment" defaultValue="">
             <option value="" disabled>
               Select one
             </option>
-            <option>Yes, interested in private pay care</option>
-            <option>No, just exploring options</option>
-            <option>Need help understanding pricing</option>
+            <optgroup label="Private pay">
+              <option>Yes, interested in private pay care</option>
+              <option>Need help understanding private pay pricing</option>
+            </optgroup>
+            <optgroup label="Insurance plans">
+              {insuranceCarrierNames.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </optgroup>
+            <option>Other insurance / not listed</option>
+            <option>Not sure yet — help me verify benefits</option>
           </select>
         </label>
       </div>

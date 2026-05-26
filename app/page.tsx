@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
 import { serviceHighlights, siteConfig, stockImages, testimonials } from "@/data/site";
+import { BlogSection } from "@/components/blog-section";
+import { InsuranceLogos } from "@/components/insurance-logos";
 import { PhotoPanel } from "@/components/photo-panel";
 
 export const metadata = buildMetadata({
@@ -71,7 +73,7 @@ export default function HomePage() {
               Premium, one-on-one rehabilitation for seniors and caregivers who want recovery to feel calm,
               personal, and clinically grounded.
             </p>
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row lg:justify-center">
               <Link href="/contact" className="btn-primary px-7 py-4 text-center text-base">
                 Book Evaluation
               </Link>
@@ -113,6 +115,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <InsuranceLogos />
 
       <section className="pb-16 sm:pb-20 lg:pb-24">
         <div className="container-shell">
@@ -197,6 +201,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <BlogSection limit={3} />
 
       <section className="bg-charcoal py-16 text-white">
         <div className="container-shell grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-center">

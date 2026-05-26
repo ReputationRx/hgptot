@@ -20,7 +20,9 @@ export function PageHero({ eyebrow, title, description, align = "left" }: PageHe
           <div className={`gold-divider mt-6 ${centered ? "mx-auto" : ""}`} />
           <p className={`mt-8 lede ${centered ? "mx-auto max-w-3xl" : "max-w-3xl"}`}>{description}</p>
         </div>
-        <div className={`mt-10 flex flex-col gap-4 sm:flex-row ${centered ? "justify-center" : ""}`}>
+        <div
+          className={`mt-10 flex flex-col gap-4 sm:flex-row lg:justify-center ${centered ? "justify-center" : ""}`}
+        >
           <Link href="/contact" className="btn-primary px-6 py-4 text-center">
             {siteConfig.ctas.primary}
           </Link>

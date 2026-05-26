@@ -84,7 +84,7 @@ export function ContentPage({
             </div>
 
             <div className="card-surface bg-gradient-to-b from-white to-warm p-8">
-              <span className="section-kicker">Care goals</span>
+              <span className="section-kicker text-gold">Care goals</span>
               <h2 className="mt-4 font-serif text-2xl text-charcoal">Common outcomes families are looking for</h2>
               <div className="mt-6 space-y-4">
                 {benefits.map((benefit) => (
@@ -94,14 +94,14 @@ export function ContentPage({
                 ))}
               </div>
               <div className="mt-8 rounded-[1.75rem] bg-teal p-6 text-white lg:hidden">
-                <p className="text-sm uppercase tracking-[0.2em] text-white/70">Next step</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Next step</p>
                 <p className="mt-3 text-lg leading-8 text-white/88">
                   Call to discuss the patient’s goals, location, and whether in-home Physical Therapy or Occupational
                   Therapy is the best fit.
                 </p>
                 <a
                   href={siteConfig.phoneHref}
-                  className="btn-on-dark mt-6 inline-flex px-5 py-3"
+                  className="btn-outline-on-dark mt-6 inline-flex px-5 py-3"
                 >
                   {siteConfig.phoneDisplay}
                 </a>
@@ -120,11 +120,11 @@ export function ContentPage({
             <ContactForm defaultService={eyebrow} showIntro />
 
             <div className="hidden rounded-[1.75rem] bg-teal p-6 text-white lg:block">
-              <p className="text-sm uppercase tracking-[0.2em] text-white/70">Prefer to call?</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Prefer to call?</p>
               <p className="mt-3 text-lg leading-8 text-white/88">
                 Speak with our team about goals, location, and whether in-home care is the right fit.
               </p>
-              <a href={siteConfig.phoneHref} className="btn-on-dark mt-6 inline-flex px-5 py-3">
+              <a href={siteConfig.phoneHref} className="btn-outline-on-dark mt-6 inline-flex px-5 py-3">
                 {siteConfig.phoneDisplay}
               </a>
             </div>

@@ -59,6 +59,38 @@ export function buildMedicalBusinessSchema() {
   };
 }
 
+export function buildArticleSchema(post: {
+  title: string;
+  description: string;
+  slug: string;
+  publishedAt: string;
+  service: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteConfig.url}/blog/${post.slug}`
+    },
+    articleSection: post.service,
+    about: post.service
+  };
+}
+
 export function buildBreadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",

@@ -9,6 +9,7 @@ import { Logo } from "@/components/logo";
 const topLevelNav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
   { href: "/service-areas", label: "Service Areas" },
   { href: "/contact", label: "Contact" }
 ];
@@ -91,7 +92,7 @@ export function SiteHeader() {
         </div>
 
         <nav className="hidden border-t border-teal/10 py-2 lg:block" aria-label="Service navigation">
-          <div className="flex items-center gap-2 overflow-x-auto">
+          <div className="flex items-center justify-center gap-2 overflow-x-auto">
             <span className="mr-2 shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-gold">
               Services
             </span>

@@ -121,6 +121,7 @@ export const stockImages = {
 export const mainNav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
   { href: "/physical-therapy", label: "Physical Therapy" },
   { href: "/occupational-therapy", label: "Occupational Therapy" },
   { href: "/geriatric-therapy", label: "Geriatric Therapy" },

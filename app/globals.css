@@ -107,6 +107,51 @@ textarea {
   @apply inline-flex rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-charcoal;
 }
 
+.insurance-logo-card {
+  @apply rounded-2xl border border-teal/10 bg-white px-4 py-5 shadow-soft transition duration-200 ease-out hover:border-gold/40 hover:shadow-md;
+}
+
+.theme-dark .insurance-logo-card {
+  background-color: #ffffff;
+  border-color: rgba(15, 124, 122, 0.14);
+  box-shadow: 0 12px 38px rgba(8, 63, 61, 0.12);
+}
+
+.theme-dark .insurance-logo-card:hover {
+  border-color: rgba(200, 164, 77, 0.45);
+}
+
+@media (min-width: 1024px) {
+  .insurance-logo-card-lg {
+    overflow: visible;
+  }
+
+  .insurance-logo-card-lg img {
+    width: 100%;
+    height: auto;
+    max-height: 20rem;
+    min-height: 18rem;
+  }
+}
+
+.theme-dark .insurance-section {
+  background-color: rgba(8, 63, 61, 0.92);
+  border-color: rgba(15, 124, 122, 0.2);
+}
+
+.theme-dark .insurance-section .insurance-section-title {
+  color: #ffffff;
+}
+
+.theme-dark .insurance-section .insurance-section-copy {
+  color: rgba(248, 247, 243, 0.88);
+}
+
+.theme-dark .insurance-section .insurance-section-footnote,
+.theme-dark .insurance-section .text-charcoal\/60 {
+  color: rgba(248, 247, 243, 0.68);
+}
+
 .btn-primary {
   @apply rounded-full bg-teal font-semibold text-white transition duration-200 ease-out hover:bg-gold hover:text-white;
 }
@@ -304,8 +349,16 @@ textarea {
 
 .theme-dark .site-footer-light .text-charcoal,
 .theme-dark .site-footer-light .text-charcoal\/72,
-.theme-dark .site-footer-light .text-charcoal\/55 {
+.theme-dark .site-footer-light .text-charcoal\/65,
+.theme-dark .site-footer-light .text-charcoal\/55,
+.theme-dark .site-footer-light .site-footer-copyright,
+.theme-dark .site-footer-light .site-footer-copyright p {
   color: rgba(47, 47, 47, 0.76);
+}
+
+.theme-dark .site-footer-light .site-footer-copyright > div > p:first-child {
+  color: #2f2f2f;
+  font-weight: 500;
 }
 
 .theme-dark .site-footer-light .text-charcoal\/55 {
@@ -319,4 +372,34 @@ textarea {
 
 .theme-dark .site-footer-light .border-teal\/10 {
   border-color: rgba(15, 124, 122, 0.16);
+}
+
+.cookie-consent-panel {
+  background: linear-gradient(145deg, rgba(8, 63, 61, 0.98) 0%, rgba(15, 124, 122, 0.92) 100%);
+}
+
+.cookie-consent-glow {
+  background-image:
+    radial-gradient(circle at top left, rgba(200, 164, 77, 0.22), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(127, 175, 142, 0.16), transparent 35%);
+}
+
+.cookie-consent-toggle {
+  accent-color: #c8a44d;
+}
+
+@media (max-width: 767px) {
+  .cookie-consent-root {
+    padding-bottom: 4.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .cookie-consent-panel {
+    box-shadow: 0 12px 32px rgba(8, 63, 61, 0.35);
+  }
+
+  .cookie-consent-prefs-mobile {
+    -webkit-overflow-scrolling: touch;
+  }
 }
