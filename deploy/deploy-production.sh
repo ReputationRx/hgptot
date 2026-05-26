@@ -46,7 +46,7 @@ cp -r public .next/standalone/public
 cp -r .next/static .next/standalone/.next/static
 
 if [ -f deploy/fix-static-400.sh ]; then
-  bash deploy/fix-static-400.sh || true
+  bash deploy/fix-static-400.sh
 fi
 
 if command -v pm2 >/dev/null 2>&1; then

@@ -7,14 +7,6 @@ set -euo pipefail
 
 APP_DIR="/www/wwwroot/hgptot.com"
 NGINX_CONF="/www/server/panel/vhost/nginx/node_hgptot.conf"
-STATIC_BLOCK='    # Next.js static assets (serve from disk, bypass Node proxy)
-    location /_next/static/ {
-        alias /www/wwwroot/hgptot.com/.next/static/;
-        access_log off;
-        expires 365d;
-        add_header Cache-Control "public, max-age=31536000, immutable";
-    }
-'
 
 echo "==> Ensure static files exist"
 cd "$APP_DIR"
@@ -76,11 +68,15 @@ def strip_next_static_locations(s: str) -> str:
 text = strip_next_static_locations(text)
 
 if "alias /www/wwwroot/hgptot.com/.next/static/" not in text:
-    needle = "    location / {"
-    if needle not in text:
-        raise SystemExit("Could not find location / block in nginx config")
-    text = text.replace(needle, block + needle, 1)
-    print("nginx: inserted static alias block")
+    m = re.search(r"^(\s*)location\s+/\s*\{", text, re.MULTILINE)
+    if m:
+        insert_at = m.start()
+        text = text[:insert_at] + block + text[insert_at:]
+        print("nginx: inserted static alias block before location /")
+    else:
+        raise SystemExit(
+            "Could not find 'location / {' in nginx config — add the /_next/static/ alias block manually in aaPanel"
+        )
 else:
     print("nginx: static alias already present after cleanup")
 
