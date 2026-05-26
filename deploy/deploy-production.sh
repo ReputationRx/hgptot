@@ -50,9 +50,21 @@ if [ -f deploy/fix-static-400.sh ]; then
 fi
 
 if command -v pm2 >/dev/null 2>&1; then
+  # Free port 3004 so a stale next-server (aaPanel/nohup) cannot block the new build
+  if command -v fuser >/dev/null 2>&1; then
+    fuser -k 3004/tcp 2>/dev/null || true
+  else
+    pkill -f "next-server.*3004" 2>/dev/null || true
+    pkill -f "standalone/server.js" 2>/dev/null || true
+  fi
+  sleep 1
   pm2 delete hgptot 2>/dev/null || true
   pm2 start ecosystem.config.cjs
   pm2 save
+  if ! pm2 describe hgptot 2>/dev/null | grep -q "status.*online"; then
+    echo "ERROR: hgptot did not start — check: pm2 logs hgptot"
+    exit 1
+  fi
 elif [ -f /www/server/nodejs/vhost/scripts/hgptot.sh ]; then
   bash /www/server/nodejs/vhost/scripts/hgptot.sh restart
 else

@@ -5,6 +5,7 @@ import { serviceHighlights, siteConfig, stockImages, testimonials } from "@/data
 import { BlogSection } from "@/components/blog-section";
 import { InsuranceLogos } from "@/components/insurance-logos";
 import { PhotoCarousel, type PhotoCarouselSlide } from "@/components/photo-carousel";
+import { PhotoPanel } from "@/components/photo-panel";
 
 export const metadata = buildMetadata({
   title: "Luxury In-Home Physical & Occupational Therapy in Queens and Nassau County",
@@ -125,6 +126,31 @@ export default function HomePage() {
       </section>
 
       <InsuranceLogos />
+
+      <section className="pb-16 sm:pb-20 lg:pb-24">
+        <div className="container-shell">
+          <div className="grid gap-5 lg:grid-cols-3">
+            <PhotoPanel
+              image={stockImages.physicalTherapy}
+              label="Guided mobility"
+              heightClassName="min-h-[320px]"
+              imageClassName="object-[55%_center]"
+            />
+            <PhotoPanel
+              image={stockImages.inHomeTherapy}
+              label="In-home safety"
+              heightClassName="min-h-[320px]"
+              imageClassName="object-center"
+            />
+            <PhotoPanel
+              image={stockImages.occupationalTherapy}
+              label="Daily independence"
+              heightClassName="min-h-[320px]"
+              imageClassName="object-[45%_center]"
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="section-space border-y border-teal/10 bg-charcoal/5">
         <div className="container-shell">

@@ -7,15 +7,28 @@ export type PhotoCarouselSlide = {
   src: string;
   alt: string;
   caption?: string;
+  /** Use for SVG insurance logos */
+  unoptimized?: boolean;
 };
 
 type PhotoCarouselProps = {
   slides: PhotoCarouselSlide[];
   className?: string;
   autoplayMs?: number;
+  /** `logo` — centered contain on white (insurance); `photo` — full-bleed cover (care imagery) */
+  variant?: "photo" | "logo";
+  ariaLabel?: string;
 };
 
-export function PhotoCarousel({ slides, className = "", autoplayMs = 6500 }: PhotoCarouselProps) {
+export function PhotoCarousel({
+  slides,
+  className = "",
+  autoplayMs = 6500,
+  variant = "photo",
+  ariaLabel
+}: PhotoCarouselProps) {
+  const isLogo = variant === "logo";
+  const regionLabel = ariaLabel ?? (isLogo ? "Insurance plans" : "Care photography");
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = slides.length;
@@ -50,7 +63,7 @@ export function PhotoCarousel({ slides, className = "", autoplayMs = 6500 }: Pho
         className="photo-carousel-inner relative overflow-hidden rounded-2xl"
         role="region"
         aria-roledescription="carousel"
-        aria-label="Care photography"
+        aria-label={regionLabel}
         onTouchStart={(e) => setTouchX(e.touches[0]?.clientX ?? null)}
         onTouchEnd={(e) => {
           if (touchX == null) return;
@@ -60,7 +73,13 @@ export function PhotoCarousel({ slides, className = "", autoplayMs = 6500 }: Pho
           if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
         }}
       >
-        <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] md:aspect-[21/9]">
+        <div
+          className={
+            isLogo
+              ? "photo-carousel-logo-viewport relative isolate w-full"
+              : "relative aspect-[4/3] w-full sm:aspect-[16/9] md:aspect-[21/9]"
+          }
+        >
           {slides.map((slide, i) => (
             <div
               key={slide.src + i}
@@ -69,15 +88,33 @@ export function PhotoCarousel({ slides, className = "", autoplayMs = 6500 }: Pho
               }`}
               aria-hidden={i !== safeIndex}
             >
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                sizes="(min-width: 1024px) 1100px, 100vw"
-                className="object-cover object-center"
-                priority={i === 0}
-                draggable={false}
-              />
+              {isLogo ? (
+                <div className="photo-carousel-logo-safe flex h-full w-full items-center justify-center">
+                  <div className="photo-carousel-logo-frame relative h-[80%] w-[80%] max-h-full max-w-full">
+                    <Image
+                      src={slide.src}
+                      alt={slide.alt}
+                      fill
+                      sizes="(min-width: 1280px) 720px, (min-width: 1024px) 640px, 90vw"
+                      className="object-contain object-center"
+                      priority={i === 0}
+                      draggable={false}
+                      unoptimized={slide.unoptimized ?? slide.src.endsWith(".svg")}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  sizes="(min-width: 1024px) 1100px, 100vw"
+                  className="object-cover object-center"
+                  priority={i === 0}
+                  draggable={false}
+                  unoptimized={slide.unoptimized}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -111,7 +148,13 @@ export function PhotoCarousel({ slides, className = "", autoplayMs = 6500 }: Pho
       </div>
 
       {current.caption ? (
-        <p className="mt-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-teal">{current.caption}</p>
+        <p
+          className={`photo-carousel-caption mt-4 text-center font-semibold text-teal ${
+            isLogo ? "text-lg tracking-tight normal-case" : "text-sm uppercase tracking-[0.2em]"
+          }`}
+        >
+          {current.caption}
+        </p>
       ) : null}
 
       {count > 1 ? (
