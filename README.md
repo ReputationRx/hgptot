@@ -54,6 +54,16 @@ PORT=3000 npm run start
 
 5. In aaPanel or NGINX, reverse proxy the public domain to `127.0.0.1:3000`.
 
+### If CSS/JS show 404 after a deploy (`_next/static/...`)
+
+Each build uses **new hashed filenames** for bundles. If **HTML is still cached** (browser, Cloudflare, or another CDN) from an older deploy, that HTML points at **old** chunk names that no longer exist on disk → 404.
+
+**Fix for visitors:** hard refresh (Shift+Reload) or clear site data for `hgptot.com`.
+
+**Fix on infra:** purge CDN cache for the site after every deploy. This repo sets `Cache-Control: max-age=0, must-revalidate` on HTML routes (see [`next.config.mjs`](next.config.mjs)) so browsers revalidate documents; you still need to purge **edge caches** if you use one.
+
+**On the server:** serve `/_next/static/` from disk with the alias in [`deploy/fix-static-400.sh`](deploy/fix-static-400.sh) so nginx always reads the current build’s files from `/www/wwwroot/hgptot.com/.next/static/`.
+
 Example NGINX location block:
 
 ```nginx

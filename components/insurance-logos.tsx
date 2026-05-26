@@ -65,7 +65,7 @@ export function InsuranceLogos() {
           </p>
         </div>
 
-        <div className="mt-14 space-y-12">
+        <div className="insurance-grid-panel mt-14 space-y-12 rounded-[2rem] border border-teal/15 p-5 sm:p-7 md:p-10">
           <div>
             <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
               <span className="section-kicker">Physical Therapy</span>

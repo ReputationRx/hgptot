@@ -4,7 +4,7 @@ import { buildMetadata } from "@/lib/seo";
 import { serviceHighlights, siteConfig, stockImages, testimonials } from "@/data/site";
 import { BlogSection } from "@/components/blog-section";
 import { InsuranceLogos } from "@/components/insurance-logos";
-import { PhotoPanel } from "@/components/photo-panel";
+import { PhotoCarousel, type PhotoCarouselSlide } from "@/components/photo-carousel";
 
 export const metadata = buildMetadata({
   title: "Luxury In-Home Physical & Occupational Therapy in Queens and Nassau County",
@@ -44,6 +44,14 @@ function IconBadge({ label }: { label: string }) {
     </div>
   );
 }
+
+const homeShowcaseSlides: PhotoCarouselSlide[] = [
+  { ...stockImages.physicalTherapy, caption: "Guided mobility" },
+  { ...stockImages.inHomeTherapy, caption: "In-home safety" },
+  { ...stockImages.occupationalTherapy, caption: "Daily independence" },
+  { ...stockImages.geriatricTherapy, caption: "Senior-focused care" },
+  { ...stockImages.privatePayTherapy, caption: "Private evaluation planning" }
+];
 
 export default function HomePage() {
   return (
@@ -118,57 +126,35 @@ export default function HomePage() {
 
       <InsuranceLogos />
 
-      <section className="pb-16 sm:pb-20 lg:pb-24">
+      <section className="section-space border-y border-teal/10 bg-charcoal/5">
         <div className="container-shell">
-          <div className="grid gap-5 lg:grid-cols-3">
-            <PhotoPanel
-              image={stockImages.physicalTherapy}
-              label="Guided mobility"
-              heightClassName="min-h-[320px]"
-              imageClassName="object-[55%_center]"
-            />
-            <PhotoPanel
-              image={stockImages.inHomeTherapy}
-              label="In-home safety"
-              heightClassName="min-h-[320px]"
-              imageClassName="object-center"
-            />
-            <PhotoPanel
-              image={stockImages.occupationalTherapy}
-              label="Daily independence"
-              heightClassName="min-h-[320px]"
-              imageClassName="object-[45%_center]"
-            />
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="eyebrow">In-home care</p>
+            <h2 className="heading-section mt-4">Therapy where life actually happens</h2>
+            <p className="mt-5 text-lg leading-8 text-charcoal/75">
+              A calm look at one-on-one visits—without heavy overlays so faces and spaces stay clear on every device.
+            </p>
           </div>
+          <PhotoCarousel slides={homeShowcaseSlides} className="mx-auto mt-10 max-w-5xl" />
         </div>
       </section>
 
       <section className="bg-white section-space">
-        <div className="container-shell">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-            <PhotoPanel
-              image={stockImages.physicalTherapy}
-              label="One-on-one recovery"
-              heightClassName="min-h-[520px]"
-              imageClassName="object-[58%_center]"
-            />
-            <div>
-              <p className="eyebrow">How it works</p>
-              <h2 className="heading-section mt-4">A simple recovery path, without the cold clinical feeling.</h2>
-              <div className="mt-8 space-y-6">
-                {processSteps.map((step, index) => (
-                  <div key={step.title} className="flex gap-5">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal text-sm font-semibold text-white">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-charcoal">{step.title}</h3>
-                      <p className="mt-2 leading-7 text-charcoal/70">{step.copy}</p>
-                    </div>
-                  </div>
-                ))}
+        <div className="container-shell max-w-3xl">
+          <p className="eyebrow">How it works</p>
+          <h2 className="heading-section mt-4">A simple recovery path, without the cold clinical feeling.</h2>
+          <div className="mt-8 space-y-6">
+            {processSteps.map((step, index) => (
+              <div key={step.title} className="flex gap-5">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal text-sm font-semibold text-white">
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-charcoal">{step.title}</h3>
+                  <p className="mt-2 leading-7 text-charcoal/70">{step.copy}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
